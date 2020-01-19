@@ -1,0 +1,30 @@
+body {
+    background-color: #90caf9;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+div#user-input {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: 8vh;
+}
+
+label {
+    margin: 10px;
+}
+
+span {
+    min-width: 100vh;
+}
+
+ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+ul option {
+    flex-basis: 32%;
+}

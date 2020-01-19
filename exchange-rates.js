@@ -44,11 +44,12 @@ function listarBasesDeCambio(objetoRates) {
 
 function listarConversiones(objetoRates) {
     const rates = Object.entries(objetoRates);
-    const listadoConversiones = document.querySelector('ul');
+    const $listadoConversiones = document.querySelector('ul');
+    $listadoConversiones.textContent = '';
     rates.forEach(valor => {
         const conversion = document.createElement('option');
         conversion.textContent = `${valor[0]}: ${valor[1]}`;
-        listadoConversiones.appendChild(conversion);
+        $listadoConversiones.appendChild(conversion);
     });
 }
 
@@ -56,7 +57,8 @@ function actualizar(base, fecha) {
     fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
         .then(respuesta => respuesta.json())
         .then(respuestaJSON => {
-            const $conversiones = document.querySelector('ul');
+            const $conversiones = document.querySelector('span');
+            // const $conversiones = document.querySelector('ul');
             $conversiones.textContent = `Listando conversiones del día ${respuestaJSON.date} 
                 para la base de cambio ${respuestaJSON.base}:`;
             listarConversiones(respuestaJSON.rates);
