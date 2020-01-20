@@ -1,0 +1,25 @@
+{
+  "name": "exchange-rates",
+  "version": "1.0.0",
+  "description": "Tarea 1 clase 12:",
+  "main": "exchange-rates.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mpaternostro/exchange-rates.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mpaternostro/exchange-rates/issues"
+  },
+  "homepage": "https://github.com/mpaternostro/exchange-rates#readme",
+  "devDependencies": {
+    "cypress": "^3.8.2"
+  },
+  "dependencies": {
+    "http-server": "^0.12.1"
+  }
+}

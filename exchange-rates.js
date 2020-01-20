@@ -24,12 +24,30 @@ function inicializar() {
     fetch(`https://api.exchangeratesapi.io/latest`)
         .then(respuesta => respuesta.json())
         .then(respuestaJSON => {
+            const $cargando = document.querySelector('span');
+            $cargando.classList.add('oculto');
+            $fecha.removeAttribute('disabled');
+            $base.removeAttribute('disabled');
             $fecha.value = respuestaJSON.date;
             const $base_cambio = document.querySelectorAll('option')[1];
             $base_cambio.textContent = respuestaJSON.base;
             listarBasesDeCambio(respuestaJSON.rates);
         })
         .catch(error => console.error("LA INICIALIZACION FALLÓ", error));
+}
+
+function actualizar(base, fecha) {
+    const $conversiones = document.querySelector('#listado-conversiones');
+    $conversiones.classList.remove('oculto');
+    fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
+        .then(respuesta => respuesta.json())
+        .then(respuestaJSON => {
+            // const $conversiones = document.querySelector('ul');
+            $conversiones.textContent = `Listando conversiones del día ${respuestaJSON.date} 
+                para la base de cambio ${respuestaJSON.base}:`;
+            listarConversiones(respuestaJSON.rates);
+        })
+        .catch(error => console.error("LA ACTUALIZACIÓN FALLÓ", error));
 }
 
 function listarBasesDeCambio(objetoRates) {
@@ -51,17 +69,4 @@ function listarConversiones(objetoRates) {
         conversion.textContent = `${valor[0]}: ${valor[1]}`;
         $listadoConversiones.appendChild(conversion);
     });
-}
-
-function actualizar(base, fecha) {
-    fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
-        .then(respuesta => respuesta.json())
-        .then(respuestaJSON => {
-            const $conversiones = document.querySelector('span');
-            // const $conversiones = document.querySelector('ul');
-            $conversiones.textContent = `Listando conversiones del día ${respuestaJSON.date} 
-                para la base de cambio ${respuestaJSON.base}:`;
-            listarConversiones(respuestaJSON.rates);
-        })
-        .catch(error => console.error("LA ACTUALIZACIÓN FALLÓ", error));
 }

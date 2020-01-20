@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
     <title>Exchange Rates</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <div id="user-input">
-            <label>Fecha
-                <input type="date" value="">
-            </label>
-            <label>Base de Cambio <select name="">
-                    <option selected disabled>Seleccione una base</option>
-                    <option></option>
-                </select>
-            </label>
-        </div>
-        <div id="rates">
-            <span></span>
-            <ul></ul>
-        </div>
+      <div id="user-input">
+        <label
+          >Fecha
+          <input type="date" value="" disabled />
+        </label>
+        <label
+          >Base de Cambio
+          <select id="seleccionar" disabled>
+            <option selected disabled>Seleccione una base</option>
+            <option></option>
+          </select>
+        </label>
+      </div>
+      <span>Cargando...</span>
+      <div id="rates">
+        <span class="oculto" id="listado-conversiones">Cargando...</span>
+        <ul></ul>
+      </div>
     </main>
-</body>
+  </body>
 
-<script src="exchange-rates.js"></script>
-
+  <script src="exchange-rates.js"></script>
 </html>
