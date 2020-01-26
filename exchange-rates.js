@@ -29,8 +29,8 @@ function inicializar() {
             $fecha.removeAttribute('disabled');
             $base.removeAttribute('disabled');
             $fecha.value = respuestaJSON.date;
-            const $base_cambio = document.querySelectorAll('option')[1];
-            $base_cambio.textContent = respuestaJSON.base;
+            const $baseCambio = document.querySelectorAll('option')[1];
+            $baseCambio.textContent = respuestaJSON.base;
             listarBasesDeCambio(respuestaJSON.rates);
         })
         .catch(error => console.error("LA INICIALIZACION FALLÓ", error));
@@ -42,7 +42,6 @@ function actualizar(base, fecha) {
     fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
         .then(respuesta => respuesta.json())
         .then(respuestaJSON => {
-            // const $conversiones = document.querySelector('ul');
             $conversiones.textContent = `Listando conversiones del día ${respuestaJSON.date} 
                 para la base de cambio ${respuestaJSON.base}:`;
             listarConversiones(respuestaJSON.rates);
