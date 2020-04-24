@@ -11,21 +11,19 @@
   <body>
     <main>
       <div id="user-input">
-        <label
-          >Fecha
+        <label>Fecha
           <input type="date" value="" disabled />
         </label>
-        <label
-          >Base de Cambio
+        <label>Base de Cambio
           <select id="seleccionar" disabled>
             <option selected disabled>Seleccione una base</option>
             <option></option>
           </select>
         </label>
       </div>
-      <span>Cargando...</span>
+      <span id="descripcion"></span>
       <div id="rates">
-        <span class="oculto" id="listado-conversiones">Cargando...</span>
+        <span id="listado-conversiones"></span>
         <ul></ul>
       </div>
     </main>
