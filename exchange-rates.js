@@ -1,71 +1,83 @@
 const $fecha = document.querySelector('input[type="date"]');
 const $base = document.querySelector('select');
 
+class Moneda {
+    constructor(base = 'EUR', fecha = 'latest') {
+        this.base = base;
+        this.fecha = fecha;
+    }
+
+    async obtenerCambios() {
+        const endpoint = `https://api.exchangeratesapi.io/${this.fecha}?base=${this.base}`;
+        const respuesta = await fetch(endpoint).catch(err => { throw new Error(err); });
+        const cambios = await respuesta.json();
+        return cambios;
+    }
+}
+
+class Listado {
+    constructor(cambios) {
+        this.cambios = cambios.rates;
+        this.base = cambios.base;
+        this.date = cambios.date;
+    }
+
+    listarConversiones() {
+        const monedas = Object.entries(this.cambios);
+        const $listadoConversiones = document.querySelector('ul');
+        const $descripcion = document.querySelector('#descripcion');
+        $listadoConversiones.innerHTML = '';
+        $descripcion.textContent = `Listando conversiones del ${this.date} con base ${this.base}:`
+        monedas.forEach(valor => {
+            const conversion = document.createElement('option');
+            conversion.textContent = `${valor[0]}: ${valor[1]}`;
+            $listadoConversiones.appendChild(conversion);
+        });
+    }
+
+    listarBasesDeCambio() {
+        const monedas = Object.keys(this.cambios);
+        const listadoBasesDeCambio = document.querySelector('#seleccionar');
+        monedas.forEach(valor => {
+            const option = document.createElement('option');
+            option.textContent = valor;
+            listadoBasesDeCambio.appendChild(option);
+        });
+    }
+}
+
 inicializar();
 
-let timeoutID;
 $fecha.addEventListener('change', () => {
-    clearTimeout(timeoutID);
-    timeoutID = setTimeout(() => {
         const baseSeleccionada = $base.value;
-        const fechaSeleccionada = $fecha.value;
-        if (baseSeleccionada !== 'Seleccione una base' ? actualizar(baseSeleccionada, fechaSeleccionada) :
+        if (baseSeleccionada !== 'Seleccione una base' ? actualizar() :
             console.warn('Aún no se eligió una base'));
-    }, 750);
 });
 
 $base.addEventListener('change', () => {
-    const baseSeleccionada = $base.value;
-    const fechaSeleccionada = $fecha.value;
-    actualizar(baseSeleccionada, fechaSeleccionada);
+    actualizar();
 });
 
-function inicializar() {
-    fetch(`https://api.exchangeratesapi.io/latest`)
-        .then(respuesta => respuesta.json())
-        .then(respuestaJSON => {
-            const $cargando = document.querySelector('span');
-            $cargando.classList.add('oculto');
-            $fecha.removeAttribute('disabled');
-            $base.removeAttribute('disabled');
-            $fecha.value = respuestaJSON.date;
-            const $baseCambio = document.querySelectorAll('option')[1];
-            $baseCambio.textContent = respuestaJSON.base;
-            listarBasesDeCambio(respuestaJSON.rates);
-        })
-        .catch(error => console.error("LA INICIALIZACION FALLÓ", error));
+async function inicializar() {
+    const moneda = new Moneda();
+    const listado = new Listado(await moneda.obtenerCambios());
+    $fecha.removeAttribute('disabled');
+    $base.removeAttribute('disabled');
+    $fecha.value = listado.date;
+    const $baseCambio = document.querySelectorAll('option')[1];
+    $baseCambio.textContent = listado.base;
+
+    listado.listarBasesDeCambio();
 }
 
-function actualizar(base, fecha) {
-    const $conversiones = document.querySelector('#listado-conversiones');
-    $conversiones.classList.remove('oculto');
-    fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
-        .then(respuesta => respuesta.json())
-        .then(respuestaJSON => {
-            $conversiones.textContent = `Listando conversiones del día ${respuestaJSON.date} 
-                para la base de cambio ${respuestaJSON.base}:`;
-            listarConversiones(respuestaJSON.rates);
-        })
-        .catch(error => console.error("LA ACTUALIZACIÓN FALLÓ", error));
-}
-
-function listarBasesDeCambio(objetoRates) {
-    const monedas = Object.keys(objetoRates);
-    const listadoBasesDeCambio = document.querySelector('select');
-    monedas.forEach(valor => {
-        const option = document.createElement('option');
-        option.textContent = valor;
-        listadoBasesDeCambio.appendChild(option);
-    });
-}
-
-function listarConversiones(objetoRates) {
-    const rates = Object.entries(objetoRates);
-    const $listadoConversiones = document.querySelector('ul');
-    $listadoConversiones.textContent = '';
-    rates.forEach(valor => {
-        const conversion = document.createElement('option');
-        conversion.textContent = `${valor[0]}: ${valor[1]}`;
-        $listadoConversiones.appendChild(conversion);
-    });
+async function actualizar() {
+    const $descripcion = document.querySelector('#descripcion');
+    const $ul = document.querySelector('ul');
+    $descripcion.textContent = 'Cargando...';
+    $ul.innerHTML = '';
+    let fecha;
+    fecha = ($fecha.value === '' ? 'latest' : $fecha.value );
+    const moneda = new Moneda($base.value, fecha);
+    const listado = new Listado(await moneda.obtenerCambios());
+    listado.listarConversiones();
 }
