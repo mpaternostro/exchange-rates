@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cy:open": "cypress open",
-    "http-server": "npx http-server"
+    "gulp": "cross-env NODE_ENV=production gulp",
+    "gulp:dev": "cross-env NODE_ENV=development gulp"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,15 @@
   },
   "homepage": "https://github.com/mpaternostro/exchange-rates#readme",
   "devDependencies": {
-    "cypress": "^3.8.2"
-  },
-  "dependencies": {
-    "http-server": "^0.12.3"
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "cross-env": "^7.0.3",
+    "cypress": "^3.8.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-connect": "^5.7.0",
+    "gulp-uglify": "^3.0.2"
   }
 }
